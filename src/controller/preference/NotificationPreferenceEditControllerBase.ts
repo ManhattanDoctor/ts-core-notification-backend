@@ -99,6 +99,6 @@ export class NotificationPreferenceEditControllerBase<U extends INotifable> exte
 
         return items.map(this.transform);
     }
-
+    
     protected transform = (item: NotificationPreferenceEntity): INotificationPreference => item.toObject();
 }
