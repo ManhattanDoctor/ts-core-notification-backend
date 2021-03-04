@@ -1,0 +1,33 @@
+{
+    "name": "@ts-core/notification-backend",
+    "version": "1.0.0",
+    "description": "Classes and utils for backend notifications",
+    "main": "index.js",
+    "scripts": {},
+    "author": {
+        "name": "Renat Gubaev",
+        "email": "renat.gubaev@gmail.com"
+    },
+    "license": "ISC",
+    "peerDependencies": {
+        "@ts-core/backend": "^1.0.38",
+        "@ts-core/backend-nestjs": "^6.0.19",
+        "@ts-core/common": "^1.0.161",
+        "@ts-core/language": "^1.0.3",
+        "@ts-core/notification": "^1.0.24"
+    },
+    "devDependencies": {
+        "gulp-npm-publisher": "1.0.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ManhattanDoctor/ts-core-notification-backend.git"
+    },
+    "keywords": [
+        "typescript"
+    ],
+    "bugs": {
+        "url": "https://github.com/ManhattanDoctor/ts-core-notification-backend/issues"
+    },
+    "homepage": "https://github.com/ManhattanDoctor/ts-core-notification-backend#readme"
+}
