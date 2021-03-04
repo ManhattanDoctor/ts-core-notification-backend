@@ -1,35 +1,10 @@
-import { DefaultController } from '@ts-core/backend-nestjs/controller';
+import { DefaultController } from '@ts-core/backend/controller';
 import { ExtendedError } from '@ts-core/common/error';
 import { Logger } from '@ts-core/common/logger';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import * as _ from 'lodash';
 import { INotificationTemplateEditDto, INotificationTemplateEditDtoResponse } from '@ts-core/notification/dto/template';
 import { ObjectUtil } from '@ts-core/common/util';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsNumber, IsString } from 'class-validator';
-
-// --------------------------------------------------------------------------
-//
-//  Dto
-//
-// --------------------------------------------------------------------------
-
-export class NotificationTemplateEditDto implements INotificationTemplateEditDto {
-    @ApiProperty()
-    @IsNumber()
-    id: number;
-
-    @ApiPropertyOptional()
-    @IsOptional()
-    @IsString()
-    traceId?: string;
-}
-
-// --------------------------------------------------------------------------
-//
-//  Controller
-//
-// --------------------------------------------------------------------------
 
 export class NotificationTemplateEditControllerBase extends DefaultController<INotificationTemplateEditDto, INotificationTemplateEditDtoResponse> {
     // --------------------------------------------------------------------------

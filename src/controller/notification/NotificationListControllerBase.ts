@@ -1,4 +1,4 @@
-import { DefaultController } from '@ts-core/backend-nestjs/controller';
+import { DefaultController } from '@ts-core/backend/controller';
 import { Logger } from '@ts-core/common/logger';
 import { INotification } from '@ts-core/notification';
 import { INotificationListDto, INotificationListDtoResponse } from '@ts-core/notification/dto/notification';

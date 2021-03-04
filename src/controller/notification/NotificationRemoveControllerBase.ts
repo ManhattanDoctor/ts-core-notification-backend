@@ -1,4 +1,4 @@
-import { DefaultController } from '@ts-core/backend-nestjs/controller';
+import { DefaultController } from '@ts-core/backend/controller';
 import { ExtendedError } from '@ts-core/common/error';
 import { Logger } from '@ts-core/common/logger';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';

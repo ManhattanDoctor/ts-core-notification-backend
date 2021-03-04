@@ -9,9 +9,8 @@
         "email": "renat.gubaev@gmail.com"
     },
     "license": "ISC",
-    "peerDependencies": {
+    "dependencies": {
         "@ts-core/backend": "^1.0.38",
-        "@ts-core/backend-nestjs": "^6.0.19",
         "@ts-core/common": "^1.0.161",
         "@ts-core/language": "^1.0.3",
         "@ts-core/notification": "^1.0.24"

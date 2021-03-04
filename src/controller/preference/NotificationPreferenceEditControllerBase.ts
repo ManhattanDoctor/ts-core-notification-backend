@@ -1,40 +1,12 @@
-import { DefaultController } from '@ts-core/backend-nestjs/controller';
+import { DefaultController } from '@ts-core/backend/controller';
 import { Logger } from '@ts-core/common/logger';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import * as _ from 'lodash';
 import { INotificationPreferenceEditDto, INotificationPreferenceEditDtoResponse, INotificationPreferenceItem } from '@ts-core/notification/dto/preference';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsArray, IsString } from 'class-validator';
 import { INotifable, INotificationPreference, NotifableUid } from '@ts-core/notification';
 import { NotificationServiceBase } from '../../NotificationServiceBase';
 import { NotificationPreferenceEntity } from '../../database';
 import { ExtendedError } from '@ts-core/common/error';
-
-// --------------------------------------------------------------------------
-//
-//  Dto
-//
-// --------------------------------------------------------------------------
-
-export class NotificationPreferenceEditDto implements INotificationPreferenceEditDto {
-    @ApiProperty()
-    notifableUid: NotifableUid;
-
-    @ApiProperty()
-    @IsArray()
-    items: Array<INotificationPreferenceItem>;
-
-    @ApiPropertyOptional()
-    @IsOptional()
-    @IsString()
-    traceId?: string;
-}
-
-// --------------------------------------------------------------------------
-//
-//  Controller
-//
-// --------------------------------------------------------------------------
 
 export class NotificationPreferenceEditControllerBase<U extends INotifable> extends DefaultController<
     INotificationPreferenceEditDto,
