@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/notification-backend",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Classes and utils for backend notifications",
     "main": "index.js",
     "scripts": {},
