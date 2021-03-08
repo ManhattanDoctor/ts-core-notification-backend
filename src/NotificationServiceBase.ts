@@ -11,7 +11,7 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
     //
     // --------------------------------------------------------------------------
 
-    protected senders: Array<INotificationSender<U>>;
+    protected _senders: Array<INotificationSender<U>>;
     protected templates: Map<string, INotificationTemplate>;
 
     // --------------------------------------------------------------------------
@@ -22,7 +22,7 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
 
     constructor(logger: ILogger, protected database: NotificationDatabaseService, protected locale: NotificationLocaleService) {
         super(logger);
-        this.senders = new Array();
+        this._senders = new Array();
         this.templates = new Map();
     }
 
@@ -114,7 +114,17 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
         this.templates.clear();
         this.templates = null;
 
-        this.senders = null;
+        this._senders = null;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Public Properties
+    //
+    // --------------------------------------------------------------------------
+
+    public get senders(): Array<INotificationSender> {
+        return this._senders;
     }
 }
 
