@@ -94,7 +94,7 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
         for (let item of notifables) {
             let template = await this.getTemplate(type, item);
             if (_.isNil(template)) {
-                this.warn(`Unable to notify "${item.notifable.notifableUid}" of ${type}: template is Nil`);
+                this.warn(`Unable to notify "${item.notifable.notifableUid}" of ${type} via ${item.channel}: template is Nil`);
                 continue;
             }
 
