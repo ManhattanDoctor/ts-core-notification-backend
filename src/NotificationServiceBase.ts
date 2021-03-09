@@ -68,11 +68,15 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
 
     protected async createMessage(type: string, details: any, template: INotificationTemplate): Promise<INotificationMessage> {
         try {
-            return this.locale.translate(template, details);
+            return this.locale.translate(template, await this.createTranslationDetails(type, details));
         } catch (error) {
             this.warn(error.message);
             return !_.isEmpty(template.subject) ? { text: template.text, subject: template.subject } : { text: template.text };
         }
+    }
+
+    protected async createTranslationDetails(type: string, details: any): Promise<any> {
+        return details;
     }
 
     // --------------------------------------------------------------------------
