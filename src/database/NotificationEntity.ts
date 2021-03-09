@@ -1,5 +1,5 @@
-import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { IsNumber, IsJSON, IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { IsNumber, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import * as _ from 'lodash';
 import { TransformUtil } from '@ts-core/common/util';

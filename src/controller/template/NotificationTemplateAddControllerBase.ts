@@ -4,7 +4,7 @@ import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import * as _ from 'lodash';
 import { INotificationTemplateAddDto, INotificationTemplateAddDtoResponse } from '@ts-core/notification/dto/template';
 import { ObjectUtil } from '@ts-core/common/util';
-import { NotificationTemplateEntity } from '../../database';
+import { NotificationTemplateEntity } from '../../database/NotificationTemplateEntity';
 
 export class NotificationTemplateAddControllerBase extends DefaultController<INotificationTemplateAddDto, INotificationTemplateAddDtoResponse> {
     // --------------------------------------------------------------------------

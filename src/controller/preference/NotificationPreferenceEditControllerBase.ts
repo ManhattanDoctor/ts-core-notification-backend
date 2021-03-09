@@ -1,12 +1,12 @@
 import { DefaultController } from '@ts-core/backend/controller';
 import { Logger } from '@ts-core/common/logger';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
-import * as _ from 'lodash';
-import { INotificationPreferenceEditDto, INotificationPreferenceEditDtoResponse, INotificationPreferenceItem } from '@ts-core/notification/dto/preference';
-import { INotifable, INotificationPreference, NotifableUid } from '@ts-core/notification';
+import { INotificationPreferenceEditDto, INotificationPreferenceEditDtoResponse } from '@ts-core/notification/dto/preference';
+import { INotifable, INotificationPreference } from '@ts-core/notification';
 import { NotificationServiceBase } from '../../NotificationServiceBase';
-import { NotificationPreferenceEntity } from '../../database';
+import { NotificationPreferenceEntity } from '../../database/NotificationPreferenceEntity';
 import { ExtendedError } from '@ts-core/common/error';
+import * as _ from 'lodash';
 
 export class NotificationPreferenceEditControllerBase<U extends INotifable> extends DefaultController<
     INotificationPreferenceEditDto,
@@ -71,6 +71,6 @@ export class NotificationPreferenceEditControllerBase<U extends INotifable> exte
 
         return items.map(this.transform);
     }
-    
+
     protected transform = (item: NotificationPreferenceEntity): INotificationPreference => item.toObject();
 }

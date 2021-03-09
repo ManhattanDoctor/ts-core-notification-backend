@@ -1,5 +1,5 @@
 import { TransformUtil } from '@ts-core/common/util';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { INotificationPreference, NotifableUid } from '@ts-core/notification';
@@ -19,7 +19,7 @@ export class NotificationPreferenceEntity implements INotificationPreference {
     @IsNumber()
     public id: number;
 
-    @Column({type: 'varchar'})
+    @Column({ type: 'varchar' })
     @IsString()
     public type: string;
 

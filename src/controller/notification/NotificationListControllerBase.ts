@@ -2,7 +2,7 @@ import { DefaultController } from '@ts-core/backend/controller';
 import { Logger } from '@ts-core/common/logger';
 import { INotification } from '@ts-core/notification';
 import { INotificationListDto, INotificationListDtoResponse } from '@ts-core/notification/dto/notification';
-import { NotificationEntity } from '../../database';
+import { NotificationEntity } from '../../database/NotificationEntity';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import { TypeormUtil } from '@ts-core/backend/database/typeorm';
 
