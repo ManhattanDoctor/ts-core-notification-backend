@@ -3,7 +3,7 @@ import { IsNumber, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import * as _ from 'lodash';
 import { TransformUtil } from '@ts-core/common/util';
-import { INotification, INotificationMessage, NotificationStatus } from '@ts-core/notification';
+import { INotification, INotificationMessage, NotifableUid, NotificationStatus } from '@ts-core/notification';
 import { INotificationSenderResult } from '@ts-core/notification';
 
 @Entity({ name: 'notification' })
@@ -17,7 +17,7 @@ export class NotificationEntity implements INotification {
     public static create(
         type: string,
         channel: string,
-        notifableUid: number,
+        notifableUid: NotifableUid,
         message: INotificationMessage,
         result: INotificationSenderResult
     ): NotificationEntity {
@@ -56,7 +56,7 @@ export class NotificationEntity implements INotification {
 
     @Column({ name: 'notifable_uid', type: 'integer' })
     @IsNumber()
-    public notifableUid: number;
+    public notifableUid: NotifableUid;
 
     @Column({ nullable: true, type: 'json' })
     @IsOptional()
