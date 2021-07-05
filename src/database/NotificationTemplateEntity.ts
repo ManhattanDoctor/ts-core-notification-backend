@@ -20,7 +20,6 @@ export class NotificationTemplateEntity implements INotificationTemplate {
     public id: number;
 
     @Column()
-    @Index()
     @IsString()
     public type: string;
 
