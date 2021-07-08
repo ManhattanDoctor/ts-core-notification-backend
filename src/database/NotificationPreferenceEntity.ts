@@ -5,7 +5,7 @@ import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, Update
 import { INotificationPreference, NotifableUid } from '@ts-core/notification';
 import * as _ from 'lodash';
 
-@Entity({ name: 'notification_preference_entity' })
+@Entity({ name: 'notification_preference' })
 @Index(['type', 'notifableUid'], { unique: true })
 export class NotificationPreferenceEntity implements INotificationPreference {
     // --------------------------------------------------------------------------
