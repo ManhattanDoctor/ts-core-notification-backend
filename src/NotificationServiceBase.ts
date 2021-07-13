@@ -77,7 +77,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
         }
     }
 
-    protected getSenders(channel: string): Array<INotificationSender<T>> {
+    protected async getSenders(channel: string): Promise<Array<INotificationSender<T>>> {
         return _.filter(this.senders, item => item.channel === channel);
     }
 
@@ -87,9 +87,20 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     //
     // --------------------------------------------------------------------------
 
-    public abstract getAvailableTypes(notifable: T): Promise<Array<U>>;
+    public async getAvailableTypes(notifable: T): Promise<Array<U>> {
+        let items = [];
+        for (let item of this.processors.values()) {
+            if (item.isAvailable(notifable)) {
+                items.push(item.type);
+            }
+        }
+        return items;
+    }
 
-    public abstract getAvailableChannels(type: U, notifable: T): Promise<Array<string>>;
+    public async getAvailableChannels(type: U, notifable: T): Promise<Array<string>> {
+        let processor = this.processors.get(type);
+        return !_.isNil(processor) ? processor.getChannels(notifable) : [];
+    }
 
     public async notify(type: U, details: any): Promise<void> {
         let processor = this.processors.get(type);
@@ -106,7 +117,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
             }
 
             let message = await this.createMessage(type, details, template);
-            for (let sender of this.getSenders(item.channel)) {
+            for (let sender of await this.getSenders(item.channel)) {
                 this.send(type, details, item.notifable, sender, message);
             }
         }
