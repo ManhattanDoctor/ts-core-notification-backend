@@ -27,7 +27,7 @@ export class NotificationPreferenceListControllerBase<U extends INotifable> exte
     // --------------------------------------------------------------------------
 
     protected async list(notifable: U, params: INotificationPreferenceListDto): Promise<INotificationPreferenceListDtoResponse> {
-        let types = await this.service.getTypesAllowed(notifable);
+        let types = await this.service.getAvailableTypes(notifable);
         let exists = await this.database.preference
             .createQueryBuilder()
             .where({ notifableUid: notifable.notifableUid })
@@ -35,15 +35,15 @@ export class NotificationPreferenceListControllerBase<U extends INotifable> exte
 
         let items = new Array();
         for (let type of types) {
-            let exist = _.find(exists, { type });
+            let exist = _.find(exists, item => type.toString() === item.type);
             let isExist = !_.isNil(exist);
 
             let channels = new Array();
-            let channelsAllowed = await this.service.getChannelsAllowed(type, notifable);
+            let channelsAvailable = await this.service.getAvailableChannels(type, notifable);
             if (isExist) {
-                channels = exist.channels.filter(item => channelsAllowed.includes(item));
+                channels = exist.channels.filter(item => channelsAvailable.includes(item));
             }
-            items.push({ type, channels, channelsAllowed });
+            items.push({ type, channels, channelsAvailable });
         }
         return items;
     }

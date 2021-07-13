@@ -8,7 +8,7 @@ import { NotificationPreferenceEntity } from '../../database/NotificationPrefere
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
 
-export class NotificationPreferenceEditControllerBase<U extends INotifable> extends DefaultController<
+export class NotificationPreferenceEditControllerBase<U = string, V extends INotifable = INotifable> extends DefaultController<
     INotificationPreferenceEditDto,
     INotificationPreferenceEditDtoResponse
 > {
@@ -18,7 +18,7 @@ export class NotificationPreferenceEditControllerBase<U extends INotifable> exte
     //
     // --------------------------------------------------------------------------
 
-    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase<U>) {
+    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase<U, V>) {
         super(logger);
     }
 
@@ -28,10 +28,10 @@ export class NotificationPreferenceEditControllerBase<U extends INotifable> exte
     //
     // --------------------------------------------------------------------------
 
-    protected async edit(notifable: U, params: INotificationPreferenceEditDto): Promise<INotificationPreferenceEditDtoResponse> {
-        let types = await this.service.getTypesAllowed(notifable);
+    protected async edit(notifable: V, params: INotificationPreferenceEditDto<U>): Promise<INotificationPreferenceEditDtoResponse> {
+        let types = await this.service.getAvailableTypes(notifable);
         if (params.items.some(item => !types.includes(item.type))) {
-            throw new ExtendedError(`Some of notification types are not allowed`, ExtendedError.HTTP_CODE_BAD_REQUEST);
+            throw new ExtendedError(`Some of notification types are not available`, ExtendedError.HTTP_CODE_BAD_REQUEST);
         }
 
         let exists = await this.database.preference
@@ -41,24 +41,22 @@ export class NotificationPreferenceEditControllerBase<U extends INotifable> exte
 
         let items = Array();
         for (let item of params.items) {
-            let exist = _.find(exists, { type: item.type });
+            let exist = _.find(exists, value => item.type.toString() === value.type);
             let isExist = !_.isNil(exist);
 
             if (_.isEmpty(item.channels)) {
                 if (isExist) {
-                    this.log(`"${item.type}" removed`);
                     await this.database.preferenceRemove(exist.id);
                 }
                 continue;
             }
 
-            let channelsAllowed = await this.service.getChannelsAllowed(item.type, notifable);
-            if (item.channels.some(item => !channelsAllowed.includes(item))) {
-                throw new ExtendedError(`Notification type "${item.type}" contains not allowed channels`, ExtendedError.HTTP_CODE_BAD_REQUEST);
+            let channelsAvailable = await this.service.getAvailableChannels(item.type, notifable);
+            if (item.channels.some(item => !channelsAvailable.includes(item))) {
+                throw new ExtendedError(`Notification type "${item.type}" contains not available channels`, ExtendedError.HTTP_CODE_BAD_REQUEST);
             }
 
             if (!isExist) {
-                this.log(`"${item.type}" created`);
                 exist = new NotificationPreferenceEntity();
                 exist.type = item.type.toString();
                 exist.notifableUid = notifable.notifableUid;

@@ -3,16 +3,18 @@ import * as _ from 'lodash';
 import { INotifable, INotificationSender, INotificationTemplate, INotificationMessage } from '@ts-core/notification';
 import { NotificationDatabaseService } from './NotificationDatabaseService';
 import { NotificationLocaleService } from './NotificationLocaleService';
+import { INotificationProcessor } from './processor';
 
-export abstract class NotificationServiceBase<U extends INotifable> extends LoggerWrapper {
+export abstract class NotificationServiceBase<U = string, T extends INotifable = INotifable> extends LoggerWrapper {
     // --------------------------------------------------------------------------
     //
     //  Properties
     //
     // --------------------------------------------------------------------------
 
-    protected _senders: Array<INotificationSender<U>>;
+    protected _senders: Array<INotificationSender<T>>;
     protected templates: Map<string, INotificationTemplate>;
+    protected processors: Map<U, INotificationProcessor<U, any, T>>;
 
     // --------------------------------------------------------------------------
     //
@@ -32,51 +34,49 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
     //
     // --------------------------------------------------------------------------
 
-    protected async getTemplate(type: string, details: INotifableDetails<U>): Promise<INotificationTemplate> {
-        let locale = await this.getNotifableLocale(details.notifable);
-        let key = this.getTemplateCacheKey(type, details.channel, locale);
+    protected async getTemplate(type: U, locale: string, channel: string): Promise<INotificationTemplate> {
+        let key = this.getTemplateCacheKey(type, channel, locale);
         if (this.templates.has(key)) {
             return this.templates.get(key);
         }
 
-        let item = await this.database.template.findOne({ type, locale, channel: details.channel });
+        let item = await this.database.template.findOne({ type: type.toString(), locale, channel });
         if (!_.isNil(item)) {
             this.templates.set(key, item.toObject());
         }
         return this.templates.get(key);
     }
 
-    protected getTemplateCacheKey(type: string, channel: string, locale: string): string {
-        return `${type}_${channel}_${locale}`;
+    protected getTemplateCacheKey(type: U, channel: string, locale: string): string {
+        return `${type.toString()}_${channel}_${locale}`;
     }
 
     // --------------------------------------------------------------------------
     //
     //  Protected Methods
     //
-    // --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------}
 
-    protected abstract getNotifables(type: string, details: any): Promise<Array<INotifableDetails<U>>>;
+    protected abstract getNotifableLocale(notifable: T): Promise<string>;
 
-    protected abstract getNotifableLocale(notifable: U): Promise<string>;
+    protected abstract send(type: U, details: any, notifable: T, senders: INotificationSender<T>, message: INotificationMessage): Promise<void>;
 
-    protected abstract send(type: string, details: any, notifable: U, senders: INotificationSender<U>, message: INotificationMessage): Promise<void>;
-
-    protected getSenders(channel: string): Array<INotificationSender<U>> {
+    protected getSenders(channel: string): Array<INotificationSender<T>> {
         return _.filter(this.senders, item => item.channel === channel);
     }
 
-    protected async createMessage(type: string, details: any, template: INotificationTemplate): Promise<INotificationMessage> {
+    protected async createMessage(type: U, details: any, template: INotificationTemplate): Promise<INotificationMessage> {
+        let processor = this.processors.get(type);
+        if (!_.isNil(processor)) {
+            details = await processor.getTranslationDetails(details);
+        }
+
         try {
-            return this.locale.translate(template, await this.createTranslationDetails(type, details));
+            return this.locale.translate(template, details);
         } catch (error) {
             this.warn(error.message);
             return !_.isEmpty(template.subject) ? { text: template.text, subject: template.subject } : { text: template.text };
         }
-    }
-
-    protected async createTranslationDetails(type: string, details: any): Promise<any> {
-        return details;
     }
 
     // --------------------------------------------------------------------------
@@ -85,20 +85,21 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
     //
     // --------------------------------------------------------------------------
 
-    public abstract getTypesAllowed(notifable: U): Promise<Array<string>>;
+    public abstract getAvailableTypes(notifable: T): Promise<Array<U>>;
 
-    public abstract getChannelsAllowed(type: string, notifable: U): Promise<Array<string>>;
+    public abstract getAvailableChannels(type: U, notifable: T): Promise<Array<string>>;
 
-    public async notify(type: string, details: any): Promise<void> {
-        let notifables = await this.getNotifables(type, details);
-        if (_.isEmpty(notifables)) {
+    public async notify(type: U, details: any): Promise<void> {
+        let processor = this.processors.get(type);
+        if (_.isNil(processor)) {
+            this.warn(`Unable to notify "${type}": can't find processor`);
             return;
         }
 
-        for (let item of notifables) {
-            let template = await this.getTemplate(type, item);
+        for (let item of await processor.getNotifables(details)) {
+            let template = await this.getTemplate(type, await this.getNotifableLocale(details.notifable), item.channel);
             if (_.isNil(template)) {
-                this.warn(`Unable to notify "${item.notifable.notifableUid}" of ${type} via ${item.channel}: template is Nil`);
+                this.warn(`Unable to notify "${item.notifable.notifableUid}" of ${type} via "${item.channel}": template is Nil`);
                 continue;
             }
 
@@ -127,7 +128,7 @@ export abstract class NotificationServiceBase<U extends INotifable> extends Logg
     //
     // --------------------------------------------------------------------------
 
-    public get senders(): Array<INotificationSender> {
+    public get senders(): Array<INotificationSender<T>> {
         return this._senders;
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/notification-backend",
-    "version": "1.0.14",
+    "version": "2.0.0",
     "description": "Classes and utils for backend notifications",
     "main": "index.js",
     "scripts": {},
@@ -10,8 +10,8 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@ts-core/backend": "^1.0.38",
-        "@ts-core/common": "^1.0.161",
+        "@ts-core/backend": "^1.0.52",
+        "@ts-core/common": "^1.0.180",
         "@ts-core/language": "^1.0.3",
         "@ts-core/notification": "^1.0.25"
     },
