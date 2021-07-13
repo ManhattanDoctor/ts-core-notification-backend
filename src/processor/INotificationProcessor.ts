@@ -1,7 +1,8 @@
+import { IDestroyable } from '@ts-core/common';
 import { INotifable } from '@ts-core/notification';
 import { INotifableDetails } from '../NotificationServiceBase';
 
-export interface INotificationProcessor<U, V, T extends INotifable> {
+export interface INotificationProcessor<U, V, T extends INotifable> extends IDestroyable {
     // --------------------------------------------------------------------------
     //
     //  Properties
