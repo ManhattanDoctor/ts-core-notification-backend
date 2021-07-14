@@ -12,7 +12,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     //
     // --------------------------------------------------------------------------
 
-    protected _senders: Array<INotificationSender<T>>;
+    protected _senders: Array<INotificationSender<U, T>>;
     protected templates: Map<string, INotificationTemplate>;
     protected processors: Map<U, INotificationProcessor<U, any, T>>;
     protected defaultLocale: string;
@@ -61,7 +61,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     //
     // --------------------------------------------------------------------------}
 
-    protected abstract send(type: U, details: any, notifable: T, senders: INotificationSender<T>, message: INotificationMessage): Promise<void>;
+    protected abstract send(type: U, details: any, notifable: T, senders: INotificationSender<U, T>, message: INotificationMessage): Promise<void>;
 
     protected async getLocale(notifable: T): Promise<string> {
         return this.defaultLocale;
@@ -81,7 +81,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
         }
     }
 
-    protected async getSenders(channel: string): Promise<Array<INotificationSender<T>>> {
+    protected async getSenders(channel: string): Promise<Array<INotificationSender<U, T>>> {
         return _.filter(this.senders, item => item.channel === channel);
     }
 
@@ -149,7 +149,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     //
     // --------------------------------------------------------------------------
 
-    public get senders(): Array<INotificationSender<T>> {
+    public get senders(): Array<INotificationSender<U, T>> {
         return this._senders;
     }
 }
