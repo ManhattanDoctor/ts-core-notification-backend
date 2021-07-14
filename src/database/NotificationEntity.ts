@@ -7,7 +7,7 @@ import { INotification, INotificationMessage, NotifableUid, NotificationStatus }
 import { INotificationSenderResult } from '@ts-core/notification';
 
 @Entity({ name: 'notification' })
-export class NotificationEntity implements INotification {
+export class NotificationEntity<U = string, V = any> implements INotification {
     // --------------------------------------------------------------------------
     //
     //  Static Methods

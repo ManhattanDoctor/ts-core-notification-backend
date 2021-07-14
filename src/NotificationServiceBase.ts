@@ -94,7 +94,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     public async getAvailableTypes(notifable: T): Promise<Array<U>> {
         let items = [];
         for (let item of this.processors.values()) {
-            if (item.isAvailable(notifable)) {
+            if (await item.isAvailable(notifable)) {
                 items.push(item.type);
             }
         }

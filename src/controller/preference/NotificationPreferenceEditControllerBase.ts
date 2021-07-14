@@ -8,7 +8,7 @@ import { NotificationPreferenceEntity } from '../../database/NotificationPrefere
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
 
-export class NotificationPreferenceEditControllerBase<U = string, V extends INotifable = INotifable> extends DefaultController<
+export class NotificationPreferenceEditControllerBase<V extends INotifable = INotifable> extends DefaultController<
     INotificationPreferenceEditDto,
     INotificationPreferenceEditDtoResponse
 > {
@@ -18,7 +18,7 @@ export class NotificationPreferenceEditControllerBase<U = string, V extends INot
     //
     // --------------------------------------------------------------------------
 
-    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase<U, V>) {
+    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase) {
         super(logger);
     }
 
@@ -28,7 +28,7 @@ export class NotificationPreferenceEditControllerBase<U = string, V extends INot
     //
     // --------------------------------------------------------------------------
 
-    protected async edit(notifable: V, params: INotificationPreferenceEditDto<U>): Promise<INotificationPreferenceEditDtoResponse> {
+    protected async edit(notifable: V, params: INotificationPreferenceEditDto): Promise<INotificationPreferenceEditDtoResponse> {
         let types = await this.service.getAvailableTypes(notifable);
         if (params.items.some(item => !types.includes(item.type))) {
             throw new ExtendedError(`Some of notification types are not available`, ExtendedError.HTTP_CODE_BAD_REQUEST);

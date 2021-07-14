@@ -6,7 +6,7 @@ import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import { NotificationServiceBase } from '../../NotificationServiceBase';
 import * as _ from 'lodash';
 
-export class NotificationPreferenceListControllerBase<U extends INotifable> extends DefaultController<
+export class NotificationPreferenceListControllerBase<V extends INotifable = INotifable> extends DefaultController<
     INotificationPreferenceListDto,
     INotificationPreferenceListDtoResponse
 > {
@@ -16,7 +16,7 @@ export class NotificationPreferenceListControllerBase<U extends INotifable> exte
     //
     // --------------------------------------------------------------------------
 
-    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase<U>) {
+    constructor(logger: Logger, protected database: NotificationDatabaseService, protected service: NotificationServiceBase) {
         super(logger);
     }
 
@@ -26,7 +26,7 @@ export class NotificationPreferenceListControllerBase<U extends INotifable> exte
     //
     // --------------------------------------------------------------------------
 
-    protected async list(notifable: U, params: INotificationPreferenceListDto): Promise<INotificationPreferenceListDtoResponse> {
+    protected async list(notifable: V, params: INotificationPreferenceListDto): Promise<INotificationPreferenceListDtoResponse> {
         let types = await this.service.getAvailableTypes(notifable);
         let exists = await this.database.preference
             .createQueryBuilder()
