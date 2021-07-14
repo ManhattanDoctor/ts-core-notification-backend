@@ -15,6 +15,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     protected _senders: Array<INotificationSender<T>>;
     protected templates: Map<string, INotificationTemplate>;
     protected processors: Map<U, INotificationProcessor<U, any, T>>;
+    protected defaultLocale: string;
 
     // --------------------------------------------------------------------------
     //
@@ -28,6 +29,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
 
         this.templates = new Map();
         this.processors = new Map();
+        this.defaultLocale = 'en';
     }
 
     // --------------------------------------------------------------------------
@@ -61,7 +63,9 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
 
     protected abstract send(type: U, details: any, notifable: T, senders: INotificationSender<T>, message: INotificationMessage): Promise<void>;
 
-    protected abstract getLocale(notifable: T): Promise<string>;
+    protected async getLocale(notifable: T): Promise<string> {
+        return this.defaultLocale;
+    }
 
     protected async createMessage(type: U, details: any, template: INotificationTemplate): Promise<INotificationMessage> {
         let processor = this.processors.get(type);
@@ -110,7 +114,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
         }
 
         for (let item of await processor.getNotifables(details)) {
-            let template = await this.getTemplate(type, await this.getLocale(details.notifable), item.channel);
+            let template = await this.getTemplate(type, await this.getLocale(item.notifable), item.channel);
             if (_.isNil(template)) {
                 this.warn(`Unable to notify "${item.notifable.notifableUid}" of ${type} via "${item.channel}": template is Nil`);
                 continue;

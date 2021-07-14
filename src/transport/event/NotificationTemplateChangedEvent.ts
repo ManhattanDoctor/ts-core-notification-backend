@@ -1,7 +1,7 @@
 import { TransportEvent } from '@ts-core/common/transport';
 import { INotificationTemplate } from '@ts-core/notification';
 
-export class NotificationTemplateChangedEvent extends TransportEvent<INotificationTemplate> {
+export class NotificationTemplateChangedEvent<U = string> extends TransportEvent<INotificationTemplate<U>> {
     // --------------------------------------------------------------------------
     //
     //  Constants
@@ -16,7 +16,7 @@ export class NotificationTemplateChangedEvent extends TransportEvent<INotificati
     //
     // --------------------------------------------------------------------------
 
-    constructor(data: INotificationTemplate) {
+    constructor(data: INotificationTemplate<U>) {
         super(NotificationTemplateChangedEvent.NAME, data);
     }
 }
