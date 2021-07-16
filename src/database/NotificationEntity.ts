@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 import * as _ from 'lodash';
 import { TransformUtil } from '@ts-core/common/util';
 import { INotification, INotificationMessage, NotifableUid, NotificationStatus } from '@ts-core/notification';
-import { INotificationSenderResult } from '@ts-core/notification';
+import { INotificationResult } from '@ts-core/notification';
 
 @Entity({ name: 'notification' })
 export class NotificationEntity<U = string, V = any> implements INotification {
@@ -19,7 +19,7 @@ export class NotificationEntity<U = string, V = any> implements INotification {
         channel: string,
         notifableUid: NotifableUid,
         message: INotificationMessage,
-        result: INotificationSenderResult
+        result: INotificationResult
     ): NotificationEntity {
         let item = new NotificationEntity();
         item.type = type;

@@ -1,9 +1,10 @@
 import { ILogger, LoggerWrapper } from '@ts-core/common/logger';
 import * as _ from 'lodash';
-import { INotifable, INotificationSender, INotificationTemplate, INotificationMessage } from '@ts-core/notification';
+import { INotifable, INotificationTemplate, INotificationMessage } from '@ts-core/notification';
 import { NotificationDatabaseService } from './NotificationDatabaseService';
 import { NotificationLocaleService } from './NotificationLocaleService';
 import { INotificationProcessor } from './processor';
+import { INotificationSender } from './sender';
 
 export abstract class NotificationServiceBase<U = string, T extends INotifable = INotifable> extends LoggerWrapper {
     // --------------------------------------------------------------------------
@@ -90,6 +91,12 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
     //  Public Methods
     //
     // --------------------------------------------------------------------------
+
+    public abstract getTypesAll(): Promise<Array<U>>;
+
+    public abstract getLocalesAll(): Promise<Array<string>>;
+
+    public abstract getChannelsAll(): Promise<Array<string>>;
 
     public async getAvailableTypes(notifable: T): Promise<Array<U>> {
         let items = [];
