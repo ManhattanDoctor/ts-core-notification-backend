@@ -11,9 +11,9 @@
     "license": "ISC",
     "dependencies": {
         "@ts-core/backend": "^1.0.52",
-        "@ts-core/common": "^1.0.180",
-        "@ts-core/language": "^1.0.3",
-        "@ts-core/notification": "^2.0.4"
+        "@ts-core/common": "^1.0.184",
+        "@ts-core/language": "^1.0.6",
+        "@ts-core/notification": "^2.0.5"
     },
     "devDependencies": {
         "gulp-npm-publisher": "1.0.2"
