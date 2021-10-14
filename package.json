@@ -12,7 +12,7 @@
     "dependencies": {
         "@ts-core/backend": "^1.0.52",
         "@ts-core/common": "^1.0.184",
-        "@ts-core/language": "^1.0.6",
+        "@ts-core/language": "^1.0.7",
         "@ts-core/notification": "^2.0.5"
     },
     "devDependencies": {
