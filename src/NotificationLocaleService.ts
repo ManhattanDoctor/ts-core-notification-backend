@@ -11,8 +11,24 @@ export class NotificationLocaleService extends DestroyableMapCollection<Language
     //
     // --------------------------------------------------------------------------
 
+    // --------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    // --------------------------------------------------------------------------
+
     constructor() {
         super('locale');
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Protected Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected translateText<T>(text: string, locale: LanguageLocale, details?: T): string {
+        return locale.compile(text, details);
     }
 
     // --------------------------------------------------------------------------
@@ -21,12 +37,12 @@ export class NotificationLocaleService extends DestroyableMapCollection<Language
     //
     // --------------------------------------------------------------------------
 
-    public async translate(template: INotificationTemplate, details?: any): Promise<INotificationMessage> {
+    public async translate<T>(template: INotificationTemplate, details?: T): Promise<INotificationMessage> {
         if (_.isNil(this.has(template.locale))) {
             throw new ExtendedError(`Unable to translate message for "${template.type}" notification: locale "${template.locale}}" is Nil`);
         }
         let locale = this.get(template.locale);
-        let text = locale.compile(template.text, details);
-        return !_.isNil(template.subject) ? { text, subject: locale.compile(template.subject, details) } : { text };
+        let text = this.translateText(template.text, locale, details);
+        return !_.isNil(template.subject) ? { text, subject: this.translateText(template.subject, locale, details) } : { text };
     }
 }
