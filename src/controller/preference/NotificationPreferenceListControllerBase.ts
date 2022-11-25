@@ -1,7 +1,6 @@
-import { DefaultController } from '@ts-core/backend/controller';
-import { Logger } from '@ts-core/common/logger';
-import { INotifable } from '@ts-core/notification';
-import { INotificationPreferenceListDto, INotificationPreferenceListDtoResponse } from '@ts-core/notification/dto/preference';
+import { DefaultController } from '@ts-core/backend';
+import { Logger } from '@ts-core/common';
+import { INotifable, INotificationPreferenceListDto, INotificationPreferenceListDtoResponse } from '@ts-core/notification';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
 import { NotificationServiceBase } from '../../NotificationServiceBase';
 import * as _ from 'lodash';

@@ -1,10 +1,10 @@
-import { ILogger, LoggerWrapper } from '@ts-core/common/logger';
-import * as _ from 'lodash';
+import { ILogger, LoggerWrapper } from '@ts-core/common';
 import { INotifable, INotificationTemplate, INotificationMessage } from '@ts-core/notification';
 import { NotificationDatabaseService } from './NotificationDatabaseService';
 import { NotificationLocaleService } from './NotificationLocaleService';
 import { INotificationProcessor } from './processor';
 import { INotificationSender } from './sender';
+import * as _ from 'lodash';
 
 export abstract class NotificationServiceBase<U = string, T extends INotifable = INotifable> extends LoggerWrapper {
     // --------------------------------------------------------------------------
@@ -45,7 +45,7 @@ export abstract class NotificationServiceBase<U = string, T extends INotifable =
             return this.templates.get(key);
         }
 
-        let item = await this.database.template.findOne({ type: type.toString(), locale, channel });
+        let item = await this.database.template.findOne({ type: type.toString(), locale, channel } as any);
         if (!_.isNil(item)) {
             this.templates.set(key, item.toObject());
         }

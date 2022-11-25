@@ -1,4 +1,4 @@
-import { TransportEvent } from '@ts-core/common/transport';
+import { TransportEvent } from '@ts-core/common';
 
 export class NotificationEvent<U, V> extends TransportEvent<V> {
     // --------------------------------------------------------------------------

@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 import { IsNumber, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import * as _ from 'lodash';
-import { TransformUtil } from '@ts-core/common/util';
+import { TransformUtil, ValidateUtil } from '@ts-core/common';
 import { INotification, INotificationMessage, NotifableUid, NotificationStatus } from '@ts-core/notification';
 import { INotificationResult } from '@ts-core/notification';
 
@@ -82,5 +82,11 @@ export class NotificationEntity<U = string, V = any> implements INotification {
 
     public toObject(): INotification {
         return TransformUtil.fromClass(this, { excludePrefixes: ['__'] });
+    }
+
+    @BeforeUpdate()
+    @BeforeInsert()
+    public validate(): void {
+        ValidateUtil.validate(this);
     }
 }

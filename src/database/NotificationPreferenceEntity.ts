@@ -1,7 +1,7 @@
-import { TransformUtil } from '@ts-core/common/util';
+import { TransformUtil, ValidateUtil } from '@ts-core/common';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeUpdate, BeforeInsert } from 'typeorm';
 import { INotificationPreference, NotifableUid } from '@ts-core/notification';
 import * as _ from 'lodash';
 
@@ -47,5 +47,11 @@ export class NotificationPreferenceEntity implements INotificationPreference {
 
     public toObject(): INotificationPreference {
         return TransformUtil.fromClass(this, { excludePrefixes: ['__'] });
+    }
+
+    @BeforeUpdate()
+    @BeforeInsert()
+    public validate(): void {
+        ValidateUtil.validate(this);
     }
 }

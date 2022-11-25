@@ -1,6 +1,6 @@
-import { DefaultController } from '@ts-core/backend/controller';
-import { Logger } from '@ts-core/common/logger';
-import { INotificationsSettingsDto, INotificationsSettingsDtoResponse } from '@ts-core/notification/dto';
+import { DefaultController } from '@ts-core/backend';
+import { Logger } from '@ts-core/common';
+import { INotificationsSettingsDto, INotificationsSettingsDtoResponse } from '@ts-core/notification';
 import { NotificationServiceBase } from '../NotificationServiceBase';
 
 export class NotificationSettingsControllerBase extends DefaultController<INotificationsSettingsDto, INotificationsSettingsDtoResponse> {

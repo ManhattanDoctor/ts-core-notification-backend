@@ -1,10 +1,9 @@
-import { DefaultController } from '@ts-core/backend/controller';
-import { Logger } from '@ts-core/common/logger';
+import { DefaultController } from '@ts-core/backend';
+import { Logger, ObjectUtil } from '@ts-core/common';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
-import * as _ from 'lodash';
-import { INotificationTemplateAddDto, INotificationTemplateAddDtoResponse } from '@ts-core/notification/dto/template';
-import { ObjectUtil } from '@ts-core/common/util';
+import { INotificationTemplateAddDto, INotificationTemplateAddDtoResponse } from '@ts-core/notification';
 import { NotificationTemplateEntity } from '../../database/NotificationTemplateEntity';
+import * as _ from 'lodash';
 
 export class NotificationTemplateAddControllerBase extends DefaultController<INotificationTemplateAddDto, INotificationTemplateAddDtoResponse> {
     // --------------------------------------------------------------------------
@@ -27,7 +26,7 @@ export class NotificationTemplateAddControllerBase extends DefaultController<INo
         let item = new NotificationTemplateEntity();
         ObjectUtil.copyPartial(params, item);
 
-        await this.database.templateSave(item);
+        await this.database.template.save(item);
         return item.toObject();
     }
 }

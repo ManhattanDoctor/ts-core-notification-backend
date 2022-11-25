@@ -1,4 +1,4 @@
-import { TransportEvent } from '@ts-core/common/transport';
+import { TransportEvent } from '@ts-core/common';
 import { NotifableUid } from '@ts-core/notification';
 
 export class NotificationPersonallyEvent<U, V extends INotificationPersonallyDto = INotificationPersonallyDto> extends TransportEvent<V> {

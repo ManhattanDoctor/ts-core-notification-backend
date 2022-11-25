@@ -1,9 +1,9 @@
-import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { IsNumber, IsDate, IsOptional, IsString } from 'class-validator';
+import { Index, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeUpdate, BeforeInsert } from 'typeorm';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { INotificationTemplate } from '@ts-core/notification';
+import { ValidateUtil, TransformUtil } from '@ts-core/common';
 import { Type } from 'class-transformer';
 import * as _ from 'lodash';
-import { INotificationTemplate } from '@ts-core/notification';
-import { TransformUtil } from '@ts-core/common/util';
 
 @Entity({ name: 'notification_template' })
 @Index(['type', 'locale', 'channel'], { unique: true })
@@ -56,5 +56,11 @@ export class NotificationTemplateEntity implements INotificationTemplate {
 
     public toObject(): INotificationTemplate {
         return TransformUtil.fromClass(this, { excludePrefixes: ['__'] });
+    }
+
+    @BeforeUpdate()
+    @BeforeInsert()
+    public validate(): void {
+        ValidateUtil.validate(this);
     }
 }

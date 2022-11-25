@@ -1,11 +1,10 @@
-import { DefaultController } from '@ts-core/backend/controller';
-import { Logger } from '@ts-core/common/logger';
+import { DefaultController } from '@ts-core/backend';
+import { Logger, ExtendedError } from '@ts-core/common';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
-import { INotificationPreferenceEditDto, INotificationPreferenceEditDtoResponse } from '@ts-core/notification/dto/preference';
+import { INotificationPreferenceEditDto, INotificationPreferenceEditDtoResponse } from '@ts-core/notification';
 import { INotifable, INotificationPreference } from '@ts-core/notification';
 import { NotificationServiceBase } from '../../NotificationServiceBase';
 import { NotificationPreferenceEntity } from '../../database/NotificationPreferenceEntity';
-import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
 
 export class NotificationPreferenceEditControllerBase<V extends INotifable = INotifable> extends DefaultController<
@@ -34,8 +33,7 @@ export class NotificationPreferenceEditControllerBase<V extends INotifable = INo
             throw new ExtendedError(`Some of notification types are not available`, ExtendedError.HTTP_CODE_BAD_REQUEST);
         }
 
-        let exists = await this.database.preference
-            .createQueryBuilder()
+        let exists = await this.database.preference.createQueryBuilder()
             .where({ notifableUid: notifable.notifableUid })
             .getMany();
 
@@ -46,7 +44,7 @@ export class NotificationPreferenceEditControllerBase<V extends INotifable = INo
 
             if (_.isEmpty(item.channels)) {
                 if (isExist) {
-                    await this.database.preferenceRemove(exist.id);
+                    await this.database.preference.delete({ id: exist.id });
                 }
                 continue;
             }
@@ -63,7 +61,7 @@ export class NotificationPreferenceEditControllerBase<V extends INotifable = INo
             }
             exist.channels = item.channels;
 
-            await this.database.preferenceSave(exist);
+            await this.database.preference.save(exist);
             items.push(exist);
         }
 

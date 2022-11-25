@@ -1,9 +1,9 @@
 import { INotifable } from '@ts-core/notification';
 import { INotificationProcessor } from './INotificationProcessor';
-import { LoggerWrapper, ILogger } from '@ts-core/common/logger';
+import { LoggerWrapper, ILogger } from '@ts-core/common';
 import { INotifableDetails } from '../NotificationServiceBase';
 import * as _ from 'lodash';
-import { NotificationDatabaseService } from '..';
+import { NotificationDatabaseService } from '../NotificationDatabaseService';
 
 export abstract class NotificationProcessorBase<U, V, T extends INotifable> extends LoggerWrapper implements INotificationProcessor<U, V, T> {
     // --------------------------------------------------------------------------
@@ -25,7 +25,7 @@ export abstract class NotificationProcessorBase<U, V, T extends INotifable> exte
     public abstract getNotifables(details: V): Promise<Array<INotifableDetails<T>>>;
 
     public async getChannels(notifable: T): Promise<Array<string>> {
-        let templates = await this.database.template.find({ type: this.type.toString() });
+        let templates = await this.database.template.find({ type: this.type.toString() } as any);
         return _.uniq(templates.map(item => item.channel));
     }
 

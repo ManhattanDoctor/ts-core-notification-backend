@@ -1,8 +1,15 @@
 {
     "name": "@ts-core/notification-backend",
-    "version": "2.0.10",
+    "version": "3.0.0",
     "description": "Classes and utils for backend notifications",
-    "main": "index.js",
+    "main": "./cjs/public-api.js",
+    "module": "./esm/public-api.js",
+    "exports": {
+        ".": {
+            "import": "./esm/public-api.js",
+            "require": "./cjs/public-api.js"
+        }
+    },
     "scripts": {},
     "author": {
         "name": "Renat Gubaev",
@@ -10,13 +17,13 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@ts-core/backend": "^1.0.52",
-        "@ts-core/common": "^1.0.184",
-        "@ts-core/language": "^1.0.7",
-        "@ts-core/notification": "^2.0.5"
+        "@ts-core/backend": "^3.0.9",
+        "@ts-core/common": "^3.0.9",
+        "@ts-core/language": "^3.0.11",
+        "@ts-core/notification": "^3.0.1"
     },
     "devDependencies": {
-        "gulp-npm-publisher": "1.0.2"
+        "gulp-npm-module-publisher": "^3.0.0"
     },
     "repository": {
         "type": "git",

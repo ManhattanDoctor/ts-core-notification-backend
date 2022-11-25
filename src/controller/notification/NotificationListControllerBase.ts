@@ -1,10 +1,10 @@
-import { DefaultController } from '@ts-core/backend/controller';
-import { Logger } from '@ts-core/common/logger';
-import { INotifable, INotification } from '@ts-core/notification';
-import { INotificationListDto, INotificationListDtoResponse } from '@ts-core/notification/dto/notification';
+import { DefaultController, TypeormUtil } from '@ts-core/backend';
+import { Logger } from '@ts-core/common';
+import { INotification } from '@ts-core/notification';
+import { INotificationListDto, INotificationListDtoResponse } from '@ts-core/notification';
 import { NotificationEntity } from '../../database/NotificationEntity';
 import { NotificationDatabaseService } from '../../NotificationDatabaseService';
-import { TypeormUtil } from '@ts-core/backend/database/typeorm';
+
 
 export class NotificationListControllerBase extends DefaultController<INotificationListDto, INotificationListDtoResponse> {
     // --------------------------------------------------------------------------

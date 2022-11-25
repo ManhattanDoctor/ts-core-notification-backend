@@ -1,16 +1,9 @@
 import { INotificationMessage, INotificationTemplate } from '@ts-core/notification';
-import { ExtendedError } from '@ts-core/common/error';
-import { DestroyableMapCollection } from '@ts-core/common/map';
+import { DestroyableMapCollection, ExtendedError } from '@ts-core/common';
 import { LanguageLocale } from '@ts-core/language';
 import * as _ from 'lodash';
 
 export class NotificationLocaleService extends DestroyableMapCollection<LanguageLocale> {
-    // --------------------------------------------------------------------------
-    //
-    //  Constructor
-    //
-    // --------------------------------------------------------------------------
-
     // --------------------------------------------------------------------------
     //
     //  Constructor
