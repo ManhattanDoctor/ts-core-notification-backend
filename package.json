@@ -1,7 +1,7 @@
 {
     "name": "@ts-core/notification-backend",
     "version": "3.0.1",
-    "description": "Classes and utils for backend notifications",
+    "description": "Backend TypeScript library for notification systems: database entities, services, controllers and processors for notifications, templates and user preferences",
     "main": "./cjs/public-api.js",
     "module": "./esm/public-api.js",
     "exports": {
@@ -30,7 +30,18 @@
         "url": "git+https://github.com/ManhattanDoctor/ts-core-notification-backend.git"
     },
     "keywords": [
-        "typescript"
+        "typescript",
+        "backend",
+        "nestjs",
+        "notification",
+        "notifications",
+        "template",
+        "channel",
+        "email",
+        "push",
+        "typeorm",
+        "queue",
+        "preferences"
     ],
     "bugs": {
         "url": "https://github.com/ManhattanDoctor/ts-core-notification-backend/issues"
